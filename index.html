@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech-to-Text Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('bg.jpg'); /* Replace with your background image */
+            background-size: cover;
+            color: #ffffff; /* Set text color to white */
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #speechInput {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+            color: #000; /* Set text color to black */
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #19241a; /* Green background color */
+            color: #fff; /* White text color */
+            border: 2px solid #fff;
+            border-radius: 5px;
+            /* margin-right: 10px; */
+            margin: 10px;
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        #error {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Speech-to-Text Converter</h1>
+    <textarea id="speechInput" placeholder="Speak here..."></textarea>
+    <div>
+        
+        <button onclick="startSpeechRecognition()">Start Recognition</button>
+        <button onclick="stopSpeechRecognition()">Stop Recognition</button>
+        <!-- <button onclick="convertSpeech()">Convert to Text</button> -->
+
+    </div>
+    <div id="result"></div>
+    <div id="error"></div>
+
+    <script>
+        let recognition;
+
+        function startSpeechRecognition() {
+            recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onresult = function (event) {
+                const transcript = event.results[event.results.length - 1][0].transcript;
+                document.getElementById('speechInput').value = transcript;
+            };
+
+            recognition.onerror = function (event) {
+                console.error('Speech recognition error:', event.error);
+            };
+
+            recognition.onend = function () {
+                console.log('Speech recognition ended.');
+            };
+
+            recognition.start();
+        }
+
+        function stopSpeechRecognition() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+    </script>
+</body>
+
+</html>
