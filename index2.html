@@ -14,11 +14,9 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-image: url('bg.jpg');
-            /* Replace with your background image */
+            background-image: url('bg.jpg'); /* Replace with your background image */
             background-size: cover;
-            color: #ffffff;
-            /* Set text color to white */
+            color: #ffffff; /* Set text color to white */
         }
 
         h1 {
@@ -33,20 +31,16 @@
             width: 80%;
             border: 2px solid #fff;
             border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            /* Semi-transparent white background */
-            color: #000;
-            /* Set text color to black */
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+            color: #000; /* Set text color to black */
         }
 
         button {
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #19241a;
-            /* Green background color */
-            color: #fff;
-            /* White text color */
+            background-color: #19241a; /* Green background color */
+            color: #fff; /* White text color */
             border: 2px solid #fff;
             border-radius: 5px;
             /* margin-right: 10px; */
@@ -69,7 +63,7 @@
     <h1>Speech-to-Text Converter</h1>
     <textarea id="speechInput" placeholder="Speak here..."></textarea>
     <div>
-
+        
         <button onclick="startSpeechRecognition()">Start Recognition</button>
         <button onclick="stopSpeechRecognition()">Stop Recognition</button>
         <!-- <button onclick="convertSpeech()">Convert to Text</button> -->
@@ -82,29 +76,25 @@
         let recognition;
 
         function startSpeechRecognition() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                recognition = new (webkitSpeechRecognition || SpeechRecognition)();
-                recognition.lang = 'en-US';
-                recognition.continuous = true;
-                recognition.interimResults = true;
+            recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = true;
+            recognition.interimResults = true;
 
-                recognition.onresult = function (event) {
-                    const transcript = event.results[event.results.length - 1][0].transcript;
-                    document.getElementById('speechInput').value = transcript;
-                };
+            recognition.onresult = function (event) {
+                const transcript = event.results[event.results.length - 1][0].transcript;
+                document.getElementById('speechInput').value = transcript;
+            };
 
-                recognition.onerror = function (event) {
-                    console.error('Speech recognition error:', event.error);
-                };
+            recognition.onerror = function (event) {
+                console.error('Speech recognition error:', event.error);
+            };
 
-                recognition.onend = function () {
-                    console.log('Speech recognition ended.');
-                };
+            recognition.onend = function () {
+                console.log('Speech recognition ended.');
+            };
 
-                recognition.start();
-            } else {
-                alert('Speech recognition is not supported on this browser. Please try using a different browser.');
-            }
+            recognition.start();
         }
 
         function stopSpeechRecognition() {
@@ -112,15 +102,7 @@
                 recognition.stop();
             }
         }
-
-        // Check if the page is being viewed on a mobile device
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            document.getElementById('speechInput').setAttribute('placeholder', 'Tap to Speak...');
-
-            // Add additional mobile-specific adjustments if needed
-        }
     </script>
-
 </body>
 
 </html>
