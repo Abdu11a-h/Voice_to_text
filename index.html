@@ -72,7 +72,7 @@
 
         <button onclick="startSpeechRecognition()">Start Recognition</button>
         <button onclick="stopSpeechRecognition()">Stop Recognition</button>
-        <!-- <button onclick="convertSpeech()">Convert to Text</button> -->
+        <button onclick="processVoiceCommand()">Convert to Text</button>
 
     </div>
     <div id="result"></div>
@@ -82,6 +82,7 @@
         let recognition;
 
         function startSpeechRecognition() {
+            console.log('in startSpeechRecognition');
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 recognition = new (webkitSpeechRecognition || SpeechRecognition)();
                 recognition.lang = 'en-US';
@@ -90,7 +91,8 @@
 
                 recognition.onresult = function (event) {
                     const transcript = event.results[event.results.length - 1][0].transcript;
-                    document.getElementById('speechInput').value = transcript;
+                    const punctuation = getRecognizedPunctuation(transcript);
+                    document.getElementById('speechInput').value = punctuation;
                 };
 
                 recognition.onerror = function (event) {
@@ -113,12 +115,67 @@
             }
         }
 
+       function getRecognizedPunctuation(text) {
+    const punctuationMap = {
+        'fullstop': '.',
+        'full stop': '.',
+        'period': '.',
+        'comma': ',',
+        'questionmark': '?',
+        'question mark': '?',
+        'exclamationmark': '!',
+        'exclamation mark': '!',
+        'semicolon': ';',
+        'semi colon': ';',
+        'colon': ':',
+        'dash': '-',
+        'hyphen': '-',
+        'apostrophe': "'",
+        'open parenthesis': '(',
+        'openparenthesis': '(',
+        'closeparenthesis': ')',
+        'close parenthesis': ')',
+        'openbracket': '[',
+        'open bracket': '[',
+        'closebracket': ']',
+        'close bracket': ']',
+        'openbrace': '{',
+        'open brace': '{',
+        'closebrace': '}',
+        'close brace': '}',
+    };
+
+    // Use a regular expression to replace spoken words with punctuation
+    const result = text.replace(/\b(?:fullstop|period|comma|questionmark|exclamationmark|semicolon|colon|dash|hyphen|apostrophe|openparenthesis|closeparenthesis|openbracket|closebracket|openbrace|closebrace)\b|\b(?:full stop|question mark|exclamation mark|open parenthesis|close parenthesis|open bracket|close bracket|open brace|close brace)\b/gi, match => punctuationMap[match.toLowerCase()] || match);
+
+    return result;
+}
+
         // Check if the page is being viewed on a mobile device
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             document.getElementById('speechInput').setAttribute('placeholder', 'Tap to Speak...');
 
             // Add additional mobile-specific adjustments if needed
         }
+
+
+        function processVoiceCommand() {
+            console.log('in processVoiceCommand');
+    const editor = document.getElementById('speechInput');
+    const command = editor.innerText.toLowerCase();
+
+    if (command.includes('add comma')) {
+        document.execCommand('insertText', false, ', ');
+    } else if (command.includes('correct sentence')) {
+        // Implement your sentence correction logic if needed
+        alert('Placeholder: Implement sentence correction logic here.');
+    } else if (command.includes('delete word')) {
+        document.execCommand('delete', false, null);
+    } else {
+        // Handle other commands or provide feedback for unrecognized commands
+        alert('Command not recognized. Please try again.');
+    }
+}
 
 
 
