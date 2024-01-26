@@ -72,7 +72,7 @@
 
         <button onclick="startSpeechRecognition()">Start Recognition</button>
         <button onclick="stopSpeechRecognition()">Stop Recognition</button>
-        <button onclick="processVoiceCommand()">Convert to Text</button>
+        <!-- <button onclick="processVoiceCommand()">Convert to Text</button> -->
 
     </div>
     <div id="result"></div>
@@ -159,23 +159,23 @@
         }
 
 
-        function processVoiceCommand() {
-            console.log('in processVoiceCommand');
-    const editor = document.getElementById('speechInput');
-    const command = editor.innerText.toLowerCase();
+//         function processVoiceCommand() {
+//             console.log('in processVoiceCommand');
+//     const editor = document.getElementById('speechInput');
+//     const command = editor.innerText.toLowerCase();
 
-    if (command.includes('add comma')) {
-        document.execCommand('insertText', false, ', ');
-    } else if (command.includes('correct sentence')) {
-        // Implement your sentence correction logic if needed
-        alert('Placeholder: Implement sentence correction logic here.');
-    } else if (command.includes('delete word')) {
-        document.execCommand('delete', false, null);
-    } else {
-        // Handle other commands or provide feedback for unrecognized commands
-        alert('Command not recognized. Please try again.');
-    }
-}
+//     if (command.includes('add comma')) {
+//         document.execCommand('insertText', false, ', ');
+//     } else if (command.includes('correct sentence')) {
+//         // Implement your sentence correction logic if needed
+//         alert('Placeholder: Implement sentence correction logic here.');
+//     } else if (command.includes('delete word')) {
+//         document.execCommand('delete', false, null);
+//     } else {
+//         // Handle other commands or provide feedback for unrecognized commands
+//         alert('Command not recognized. Please try again.');
+//     }
+// }
 
 
 
